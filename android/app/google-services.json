@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "134855099076",
+    "firebase_url": "https://newbeginnings-7fed9-default-rtdb.firebaseio.com",
+    "project_id": "newbeginnings-7fed9",
+    "storage_bucket": "newbeginnings-7fed9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:134855099076:android:05753575f03ae58f9dff91",
+        "android_client_info": {
+          "package_name": "com.newbeginnings.mobile.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "134855099076-r8e63488hbg1lgc0q74rk0qnvr1n8n66.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMqSxFFtHXS85Nr7HSB9vkdc2hWF4SF7Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "134855099076-r8e63488hbg1lgc0q74rk0qnvr1n8n66.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "134855099076-sp0b06jcje66dn9l76gdjdvqabgcqeem.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.newbeginnings.mobile.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
