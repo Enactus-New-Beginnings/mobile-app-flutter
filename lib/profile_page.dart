@@ -4,137 +4,181 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late String _name;
-  late String _email;
-  late String _dateOfBirth;
-  late String _location;
-  int _selectedIndex = 0;
-
-  static const List<Widget> _widgetOptions = <Widget>[    Text('Profile Page'),    Text('Map'),    Text('Resume'),  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    // Set default values for profile information
-    _name = 'John Doe';
-    _email = 'john.doe@email.com';
-    _dateOfBirth = '01/01/1990';
-    _location = 'San Francisco, CA';
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Welcome to Flutter',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Profile'),
-        ),
-        body: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 100.0,
-                  backgroundImage: NetworkImage(
-                    'https://picsum.photos/200',
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Name',
-                  ),
-                  initialValue: _name,
-                  onChanged: (value) {
-                    setState(() {
-                      _name = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                  ),
-                  initialValue: _email,
-                  onChanged: (value) {
-                    setState(() {
-                      _email = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Date of Birth',
-                  ),
-                  initialValue: _dateOfBirth,
-                  onChanged: (value) {
-                    setState(() {
-                      _dateOfBirth = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 10.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Location',
-                  ),
-                  initialValue: _location,
-                  onChanged: (value) {
-                    setState(() {
-                      _location = value;
-                    });
-                  },
-                ),
-                SizedBox(height: 10.0),
-                ElevatedButton(
-                  onPressed: () {
-                    // Add functionality for editing profile
-                  },
-                  child: Text('Edit Profile'),
-                ),
-              ],
-            ),
+      home: ProfilePage(),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  final PageController pageController = PageController();
+  int currentPageIndex = 0;
+
+  void onPageChanged(int index) {
+    currentPageIndex = index;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: PageView(
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        children: <Widget>[
+          ProfileForm(),
+          MapPage(),
+          ResumePage(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.map),
-              label: 'Map',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.description),
-              label: 'Resume',
-            ),
-          ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.amber[800],
-          onTap: _onItemTapped,
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.description),
+            label: 'Resume',
+          ),
+        ],
+        currentIndex: currentPageIndex,
+        selectedItemColor: Colors.amber[800],
+        onTap: (index) {
+          pageController.animateToPage(
+            index,
+            duration: Duration(milliseconds: 500),
+            curve: Curves.ease,
+          );
+        },
       ),
     );
   }
 }
+
+class ProfileForm extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        CircleAvatar(
+          radius: 100.0,
+          backgroundImage: NetworkImage(
+            'https://picsum.photos/200',
+          ),
+        ),
+        SizedBox(height: 10.0),
+        ProfileTextField(label: 'Name', initialValue: 'John Doe'),
+        SizedBox(height: 10.0),
+        ProfileTextField(label: 'Email', initialValue: 'john.doe@email.com'),
+        SizedBox(height: 10.0),
+        ProfileTextField(label: 'Date of Birth', initialValue: '01/01/1990'),
+        SizedBox(height: 10.0),
+        ProfileTextField(label: 'Location', initialValue: 'San Francisco, CA'),
+        SizedBox(height: 10.0),
+        ElevatedButton(
+          onPressed: () {
+            // Add functionality for editing profile
+          },
+          child: Text('Edit Profile'),
+        ),
+      ],
+    );
+  }
+}
+
+class ProfileTextField extends StatelessWidget {
+  final String label;
+  final String initialValue;
+
+  const ProfileTextField({
+    required this.label,
+    required this.initialValue,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+      ),
+      initialValue: initialValue,
+    );
+  }
+}
+
+class MapPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Log In Page'),
+          ),
+          body: Center(
+              child: Column(children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your username',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  child: TextFormField(
+                    decoration: InputDecoration(
+                      border: UnderlineInputBorder(),
+                      labelText: 'Enter your password',
+                    ),
+                  ),
+                ),
+                Container(
+                    margin: const EdgeInsets.all(15),
+                    child: ElevatedButton(
+                      onPressed: () {
+
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.all(30),
+                      ),
+                      child: const Text('Log In'),
+                    )),
+              ])),
+        ));
+  }
+}
+
+class ResumePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Resume'),
+      ),
+      body: Center(
+        child: Text('Resume Page Content'),
+      ),
+    );
+  }
+}
+
